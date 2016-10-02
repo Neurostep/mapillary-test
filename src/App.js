@@ -9,7 +9,8 @@ export default class App {
         mapillaryURL = "https://a.mapillary.com/v2",
         mapillaryClientId = "OFQtWkUwVEdHa3pMSWZ0cVpWVi1RZzo3NjVkYmU2NDM3ZTMzNGI0",
         upNextCount = 10,
-        fakeUserAvatar = ""
+        fakeUserAvatar = "",
+        routerRoot = ""
     }) {
         this.domTarget = domTarget;
         this.viewer = new Viewer(mapillaryURL, mapillaryClientId, { fakeUserAvatar });
@@ -24,7 +25,7 @@ export default class App {
             createElement(this.render())
         );
         this.initUpNextItems();
-        Router.init("dist");
+        Router.init(routerRoot);
         Router.add(/(.*)/, key => {
             let idx = 0;
             this.upNext.items.forEach((item, id) => {
