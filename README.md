@@ -4,6 +4,7 @@ To setup environment for this app:
 
   * Install [NodeJS and npm](https://nodejs.org/en/)
   * Clone this repository
+  * `cd mapillary-test/`
   * Run `npm install`
 
 To start this app run `npm run start`.
