@@ -4,8 +4,8 @@ function clearSlashes(str) {
 
 const Router = {
     routes: [],
-    init() {
-        this.root = "/";
+    init(root) {
+        this.root = root ? `/${clearSlashes(root)}/` : "/";
     },
 
     add(re, handler) {
@@ -27,12 +27,14 @@ const Router = {
     },
 
     navigate(path = "") {
-        history.pushState(null, null, this.root + clearSlashes(path));
+        history.pushState({ path }, null, this.root + clearSlashes(path));
         return this;
     },
 
     getFragment() {
-        return clearSlashes(decodeURIComponent(location.pathname));
+        let fragment = decodeURIComponent(location.pathname);
+        fragment = this.root != "/" ? fragment.replace(this.root, "") : fragment;
+        return clearSlashes(fragment);
     }
 };
 

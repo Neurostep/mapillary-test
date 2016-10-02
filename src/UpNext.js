@@ -2,23 +2,23 @@ import * as vd from "virtual-dom";
 import UpNextItem from "./UpNextItem";
 
 export default class UpNext {
-    constructor(mapillaryClientId, count) {
+    constructor(mapillaryClientId, count, clickHandler = () => {}) {
         this.data = {};
-        this.items = this.initItems(count);
+        this.items = this.initItems(count, clickHandler);
     }
 
     render() {
-        return vd.h("div.up-next",
+        return vd.h("div.up-next.left",
             this.items.map(
                 (item, i) => vd.h(`div.up-next-item-${i}`, item.render())
             )
         );
     }
 
-    initItems(count) {
+    initItems(count, clickHandler) {
         let items = [];
         for (let i = 0; i < count; i++) {
-            items.push(new UpNextItem());
+            items.push(new UpNextItem(clickHandler));
         }
         return items;
     }
