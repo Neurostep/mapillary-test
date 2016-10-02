@@ -7,9 +7,87 @@ body {
     margin: 0;
     padding: 0;
     background-color: #f1f1f1;
+    font: 12px Roboto, arial, sans-serif;
+}
+
+.app-container {
+    width: 1000px;
+    padding: 10px;
+    margin: 0 auto;
 }
 
 .view {
     width: 640px;
     height: 480px;
+}
+
+.left {
+    float: left;
+}
+
+.clear {
+    clear: both;
+}
+
+.description {
+    margin-top: 10px;
+    background-color: #fff;
+    padding: 10px;
+}
+
+.user-avatar {
+    width: 48px;
+    height: 48px;
+    overflow: hidden;
+}
+
+.user-avatar img {
+    width: 100%;
+    height: auto;
+}
+
+.user-info {
+    margin-left: 10px;
+}
+
+.user-info div {
+    line-height: 20px;
+}
+
+.up-next {
+    padding: 5px;
+    margin-left: 10px;
+    background-color: #fff;
+}
+
+.up-next-item { 
+    cursor: pointer;
+    padding: 5px;
+    overflow: hidden;
+}
+
+.up-next-item-thumbnail {
+    width: 168px;
+    height: 94px;
+}
+
+.up-next-item-thumbnail img {
+    width: 100%;
+    height: auto;
+}
+
+.up-next-item-description {
+    margin-left: 5px;
+}
+
+.up-next-item-description div {
+    line-height: 20px;
+}
+
+.active {
+    background-color: #f1f1f1;
+}
+
+.active .up-next-item {
+    cursor: default;
 }
