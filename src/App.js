@@ -17,8 +17,11 @@ export default class App {
         this.upNext = new UpNext(mapillaryURL, mapillaryClientId, {
             count: upNextCount,
             clickHandler: (item) => {
-                Router.navigate(item.mkey);
-                Router.check();
+                this.viewer.mapillary.moveToKey(item.mkey)
+                    .then(() => {
+                        Router.navigate(item.mkey);
+                        Router.check();
+                    });
             }
         });
         this.domTarget.appendChild(
@@ -37,7 +40,6 @@ export default class App {
                     el.classList.add("active");
                 }
             });
-            this.viewer.mapillary.moveToKey(this.upNext.items[idx].data.mkey);
             let descrEl = this.domTarget.querySelector(`.description-container`);
             descrEl.removeChild(descrEl.querySelector(".description"));
             descrEl.appendChild(
