@@ -5,12 +5,20 @@ import UpNext from "./UpNext";
 import Router from "./Router";
 
 export default class App {
-    constructor(domTarget, mapillaryClientId) {
+    constructor(domTarget, {
+        mapillaryURL = "https://a.mapillary.com/v2",
+        mapillaryClientId = "OFQtWkUwVEdHa3pMSWZ0cVpWVi1RZzo3NjVkYmU2NDM3ZTMzNGI0",
+        upNextCount = 10,
+        fakeUserAvatar = ""
+    }) {
         this.domTarget = domTarget;
-        this.viewer = new Viewer(mapillaryClientId);
-        this.upNext = new UpNext(mapillaryClientId, 10, (item) => {
-            Router.navigate(item.mkey);
-            Router.check();
+        this.viewer = new Viewer(mapillaryURL, mapillaryClientId, { fakeUserAvatar });
+        this.upNext = new UpNext(mapillaryURL, mapillaryClientId, {
+            count: upNextCount,
+            clickHandler: (item) => {
+                Router.navigate(item.mkey);
+                Router.check();
+            }
         });
         this.domTarget.appendChild(
             createElement(this.render())
@@ -22,7 +30,7 @@ export default class App {
             this.upNext.items.forEach((item, id) => {
                 if (item.data.mkey === key) {
                     idx = id;
-                    let currentActive = this.domTarget.querySelector(".active")
+                    let currentActive = this.domTarget.querySelector(".active");
                     let el = this.domTarget.querySelector(`.up-next-item-${idx}`);
                     currentActive.classList.remove("active");
                     el.classList.add("active");
@@ -52,11 +60,12 @@ export default class App {
                 descrEl.appendChild(
                     createElement(this.viewer.renderDescription(json.ss[idx]))
                 );
+                // eslint-disable-next-line no-param-reassign
                 json.ss[idx].active = true;
                 return json;
             })
             .then(json =>
-                json.ss.map((item, i) => {
+                json.ss.forEach((item, i) => {
                     let parent = this.domTarget.querySelector(`.up-next-item-${i}`);
                     if (item.active) {
                         parent.classList.add("active");

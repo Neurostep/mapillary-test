@@ -17,10 +17,9 @@ export default class UpNextItem {
     }
 
     render() {
-        return !!this.data
+        return this.data
             ? vd.h("div.up-next-item", {
-                onclick: (ev) => {
-                    console.log(ev);
+                onclick: () => {
                     this.clickHandler(this.data);
                 }
             }, [

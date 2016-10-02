@@ -33,7 +33,7 @@ const Router = {
 
     getFragment() {
         let fragment = decodeURIComponent(location.pathname);
-        fragment = this.root != "/" ? fragment.replace(this.root, "") : fragment;
+        fragment = this.root !== "/" ? fragment.replace(this.root, "") : fragment;
         return clearSlashes(fragment);
     }
 };
