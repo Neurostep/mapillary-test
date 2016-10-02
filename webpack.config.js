@@ -11,7 +11,8 @@ module.exports = {
         configFile: './.eslintrc'
     },
     devServer: {
-        contentBase: './',
+        contentBase: './dist',
+        historyApiFallback: true,
         hot: true
     },
     module: {
