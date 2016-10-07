@@ -53,7 +53,6 @@ export default class App {
             currentActive.classList.remove("active");
         }
         el.classList.add("active");
-        console.log(items, idx);
         return items[idx];
     }
 
