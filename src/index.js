@@ -1,6 +1,17 @@
 import App from "./App";
+import Router from "./Router";
 
-// eslint-disable-next-line no-new
-new App(document.getElementById("demo"), {
-    fakeUserAvatar: "../fake-avatar.png"
+let app = new App(document.getElementById("demo"), {
+    fakeUserAvatar: "../fake-avatar.png",
+    activeItemKey: Router.getFragment(),
+    onViewerMove: key => {
+        Router.navigate(key);
+        Router.check();
+    }
+});
+
+Router.init();
+Router.add(/(.*)/, key => {
+    let item = app.setActiveItem(key, app.upNext.items);
+    app.updateDescription(item.data);
 });

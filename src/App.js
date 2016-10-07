@@ -2,7 +2,6 @@ import * as vd from "virtual-dom";
 import createElement from "virtual-dom/create-element";
 import Viewer from "./Viewer";
 import UpNext from "./UpNext";
-import Router from "./Router";
 
 export default class App {
     constructor(domTarget, {
@@ -10,73 +9,63 @@ export default class App {
         mapillaryClientId = "OFQtWkUwVEdHa3pMSWZ0cVpWVi1RZzo3NjVkYmU2NDM3ZTMzNGI0",
         upNextCount = 10,
         fakeUserAvatar = "",
-        routerRoot = ""
+        activeItemKey = "",
+        onViewerMove = () => {}
     }) {
         this.domTarget = domTarget;
         this.viewer = new Viewer(mapillaryURL, mapillaryClientId, { fakeUserAvatar });
         this.upNext = new UpNext(mapillaryURL, mapillaryClientId, {
             count: upNextCount,
-            clickHandler: (item) => {
-                this.viewer.mapillary.moveToKey(item.mkey)
-                    .then(() => {
-                        Router.navigate(item.mkey);
-                        Router.check();
-                    });
-            }
+            clickHandler: ({ mkey }) =>
+                this.viewer.mapillary.moveToKey(mkey)
+                    .then(() => onViewerMove(mkey))
         });
         this.domTarget.appendChild(
             createElement(this.render())
         );
-        this.initUpNextItems();
-        Router.init(routerRoot);
-        Router.add(/(.*)/, key => {
-            let idx = 0;
-            this.upNext.items.forEach((item, id) => {
-                if (item.data.mkey === key) {
-                    idx = id;
-                    let currentActive = this.domTarget.querySelector(".active");
-                    let el = this.domTarget.querySelector(`.up-next-item-${idx}`);
-                    currentActive.classList.remove("active");
-                    el.classList.add("active");
-                }
-            });
-            let descrEl = this.domTarget.querySelector(`.description-container`);
-            descrEl.removeChild(descrEl.querySelector(".description"));
-            descrEl.appendChild(
-                createElement(this.viewer.renderDescription(this.upNext.items[idx].data))
-            );
-        });
+        this.initUpNextItems(activeItemKey);
     }
 
-    initUpNextItems() {
+    initUpNextItems(activeKey = "") {
         return this.upNext.fetchData()
             .then(json => {
-                let activeKey = Router.getFragment();
-                let idx = 0;
-                json.ss.forEach((item, id) => {
-                    if (item.mkey === activeKey) {
-                        idx = id;
-                    }
-                });
-                this.initMapillary(json.ss[idx].mkey);
-                let descrEl = this.domTarget.querySelector(`.description-container`);
-                descrEl.appendChild(
-                    createElement(this.viewer.renderDescription(json.ss[idx]))
-                );
-                // eslint-disable-next-line no-param-reassign
-                json.ss[idx].active = true;
-                return json;
-            })
-            .then(json =>
                 json.ss.forEach((item, i) => {
                     let parent = this.domTarget.querySelector(`.up-next-item-${i}`);
-                    if (item.active) {
-                        parent.classList.add("active");
-                    }
                     parent.removeChild(parent.querySelector(".up-next-item-loading"));
                     this.upNext.items[i].update(item).renderTo(parent);
-                })
-            );
+                });
+                let activeItem = this.setActiveItem(activeKey, this.upNext.items);
+                this.updateDescription(activeItem.data);
+                this.initMapillary(activeItem.data.mkey);
+            });
+    }
+
+    setActiveItem(key = "", items = []) {
+        let idx = 0;
+        items.forEach((item, id) => {
+            if (item.data.mkey === key) {
+                idx = id;
+            }
+        });
+        let el = this.domTarget.querySelector(`.up-next-item-${idx}`);
+        let currentActive = this.domTarget.querySelector(".active");
+        if (currentActive) {
+            currentActive.classList.remove("active");
+        }
+        el.classList.add("active");
+        console.log(items, idx);
+        return items[idx];
+    }
+
+    updateDescription(data) {
+        let descrEl = this.domTarget.querySelector(`.description-container`);
+        let currentDescription = descrEl.querySelector(".description");
+        if (currentDescription) {
+            descrEl.removeChild(currentDescription);
+        }
+        descrEl.appendChild(
+            createElement(this.viewer.renderDescription(data))
+        );
     }
 
     initMapillary(imageId) {
