@@ -3,6 +3,8 @@
   "version": "0.0.1",
   "description": "Mapillary Test Assignment",
   "scripts": {
+    "build": "webpack --colors",
+    "lint": "eslint src/",
     "start": "webpack-dev-server --progress --colors --hot --host 0.0.0.0 --config ./webpack.config.js",
     "test": "jest"
   },
