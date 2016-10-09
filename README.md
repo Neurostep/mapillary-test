@@ -12,7 +12,7 @@ Now you can visit [http://localhost:8080/](http://localhost:8080/) from your bro
 
 ## TODO:
   * Add tests for the app;
-  * Refactor code base to avoid code duplication;
+  * Static type checking (TypeScript or Flow);
   * Smart error handling;
   * Notify user of long running server communication;
   * Add documentation.
