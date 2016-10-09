@@ -35,7 +35,7 @@ export default class App {
                     this.upNext.items[i].update(item).renderTo(parent);
                 });
                 let activeItem = this.setActiveItem(activeKey, this.upNext.items);
-                this.updateDescription(activeItem.data);
+                this.updateViewerDescription(activeItem.data);
                 this.initMapillary(activeItem.data.mkey);
             });
     }
@@ -56,15 +56,8 @@ export default class App {
         return items[idx];
     }
 
-    updateDescription(data) {
-        let descrEl = this.domTarget.querySelector(`.description-container`);
-        let currentDescription = descrEl.querySelector(".description");
-        if (currentDescription) {
-            descrEl.removeChild(currentDescription);
-        }
-        descrEl.appendChild(
-            createElement(this.viewer.renderDescription(data))
-        );
+    updateViewerDescription(data) {
+        return this.viewer.updateDescription(data, this.domTarget);
     }
 
     initMapillary(imageId) {

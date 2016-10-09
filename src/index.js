@@ -13,5 +13,5 @@ let app = new App(document.getElementById("demo"), {
 Router.init();
 Router.add(/(.*)/, key => {
     let item = app.setActiveItem(key, app.upNext.items);
-    app.updateDescription(item.data);
+    app.updateViewerDescription(item.data);
 });

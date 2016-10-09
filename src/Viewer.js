@@ -1,5 +1,6 @@
-import * as Mapillary from "mapillary-js";
 import * as vd from "virtual-dom";
+import * as Mapillary from "mapillary-js";
+import createElement from "virtual-dom/create-element";
 
 export default class Viewer {
     constructor(mapillaryURL, mapillaryClientId, { fakeUserAvatar = "" }) {
@@ -37,6 +38,17 @@ export default class Viewer {
                 vd.h("div.clear")
             ])
         ]);
+    }
+
+    updateDescription(data, target) {
+        let descrEl = target.querySelector(`.description-container`);
+        let currentDescription = descrEl.querySelector(".description");
+        if (currentDescription) {
+            descrEl.removeChild(currentDescription);
+        }
+        descrEl.appendChild(
+            createElement(this.renderDescription(data))
+        );
     }
 
     initMapillaryViewer(imageId) {
