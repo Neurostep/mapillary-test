@@ -1,3 +1,4 @@
+import "whatwg-fetch";
 import * as vd from "virtual-dom";
 import UpNextItem from "./UpNextItem";
 

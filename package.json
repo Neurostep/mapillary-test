@@ -24,7 +24,8 @@
   "homepage": "https://github.com/Neurostep/mapillary-test",
   "dependencies": {
     "mapillary-js": "^1.7.2",
-    "virtual-dom": "^2.1.1"
+    "virtual-dom": "^2.1.1",
+    "whatwg-fetch": "^1.0.0"
   },
   "devDependencies": {
     "babel": "^6.5.2",
